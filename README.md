@@ -1,9 +1,5 @@
-# Fabric Example Mod
+# Fabric Mod
+This client-side mod for various functions that come to my mind/Это клиентский мод для моего опыта с разными функциями которые придут мне в голову
+## Functions/Функции
 
-## Setup
-
-For setup instructions please see the [fabric documentation page](https://docs.fabricmc.net/develop/getting-started/setting-up-a-development-environment) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+- calculator in command /anti / каркулятор в команде /anti
