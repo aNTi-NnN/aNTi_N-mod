@@ -15,19 +15,12 @@
 	"icon": "assets/anti_n/icon.png",
 	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"com.example.ExampleMod"
-		],
 		"client": [
-			"com.example.ExampleModClient"
+			"com.anti.Client"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
+		"anti.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
