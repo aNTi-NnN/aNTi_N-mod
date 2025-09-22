@@ -102,6 +102,6 @@ public class Client implements ClientModInitializer {
 				client.player.sendMessage(Text.literal("Test bind").formatted(Formatting.AQUA), false);
 			}
 		});
-		LOGGER.info("[aNTi_N] Кто прочитал тот лох");
+		LOGGER.info("#################\n--- aNTi-N\n--- Mod\n--- for fabric\n#################");
 	}
 }
