@@ -17,10 +17,13 @@ import net.minecraft.util.Formatting;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 import java.security.Key;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl._3DFXTextureCompressionFXT1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,16 +40,16 @@ public class Client implements ClientModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static KeyBinding OpenGUIcall;
-	public static KeyBinding Test;
+	public static KeyBinding Auto;
 	@Override
 	public void onInitializeClient() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		Test = KeyBindingHelper.registerKeyBinding(
+		Auto = KeyBindingHelper.registerKeyBinding(
 			new KeyBinding(
-				"key.anti.test",
+				"key.anti.auto",
 				InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_O,
 				"category.anti.keys"
@@ -60,9 +63,28 @@ public class Client implements ClientModInitializer {
 				"category.anti.keys"
 			)
 		);
+
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+					dispatcher.register(
+						ClientCommandManager.literal("cam")
+						.then(ClientCommandManager.argument("Yaw", IntegerArgumentType.integer())
+						.then(ClientCommandManager.argument("Pitch", IntegerArgumentType.integer())
+						.executes(context -> {
+							int Yaw = IntegerArgumentType.getInteger(context, "Yaw");
+							int Pitch = IntegerArgumentType.getInteger(context, "Pitch");
+							ClientPlayerEntity plr = MinecraftClient.getInstance().player;
+							plr.setYaw(Yaw);
+							plr.setPitch(Pitch);
+							return 1;
+						})
+						)
+						)
+					);
+					});
+
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(
-				ClientCommandManager.literal("anti")
+				ClientCommandManager.literal("calc")
 				.then(ClientCommandManager.argument("fir", IntegerArgumentType.integer())
 				.then(ClientCommandManager.argument("mod", StringArgumentType.string())
 				.then(ClientCommandManager.argument("sec", IntegerArgumentType.integer())
@@ -98,8 +120,13 @@ public class Client implements ClientModInitializer {
 			}
 		});
 		ClientTickEvents.END_CLIENT_TICK.register( client -> {
-			if (Test.wasPressed()) {
-				client.player.sendMessage(Text.literal("Test bind").formatted(Formatting.AQUA), false);
+			if (Auto.wasPressed()) {
+				client.player.sendMessage(Text.literal("bind").formatted(Formatting.AQUA), false);
+				ClientPlayerEntity player = MinecraftClient.getInstance().player;
+				if (player != null) {
+					player.setYaw(0);
+					player.setPitch(0);
+				}
 			}
 		});
 		LOGGER.info("\n##################################\n---------------- aNTi-N\n---------------- Mod\n---------------- for fabric\n##################################");
